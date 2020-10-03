@@ -20,7 +20,6 @@ io.on('connection', (socket) => {
 
   const builder = new GameBuilder(positions, socket)
   builder.addPosition(socket.id).emitPosition().actOnEvent()
-  console.log(builder.positions)
 
   socket.on('disconnect', () => {
     console.log(`Client disconnected - id: ${socket.id}`)

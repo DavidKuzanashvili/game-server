@@ -51,6 +51,8 @@ module.exports = class GameBuilder {
   removePosition(id) {
     const position = this.getPositionById(id)
     if (position) {
+      const index = this.positions.findIndex(position.id)
+      this.positions.splice(index, 1)
     }
   }
 
