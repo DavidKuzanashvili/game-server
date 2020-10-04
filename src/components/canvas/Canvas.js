@@ -12,13 +12,15 @@ export default class Canvas extends Component {
   componentDidMount() {
     const socket = socketIOClient(ENDPOINT)
     socket.on('positions', (data) => {
-      console.log(data)
       this.setState({ positions: data })
     })
     this.setState({ socket: socket })
   }
 
   setup = (p5, canvasParentRef) => {
+    window.addEventListener('visibilitychange', () => {
+      this.state.socket.emit('getPlayers')
+    })
     p5.createCanvas(window.innerWidth, window.innerHeight).parent(canvasParentRef)
     p5.frameRate(this.fr)
     // use parent to render canvas in this ref (without that p5 render this canvas outside your component)

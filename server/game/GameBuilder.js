@@ -4,7 +4,7 @@ module.exports = class GameBuilder {
     this.socket = socket
   }
 
-  emitPosition() {
+  emitPositions() {
     this.socket.emit('positions', this.positions)
 
     return this
@@ -28,7 +28,6 @@ module.exports = class GameBuilder {
           position.y += 5
           break
       }
-
       this.socket.emit('positions', this.positions)
     })
 
@@ -49,14 +48,22 @@ module.exports = class GameBuilder {
   }
 
   removePosition(id) {
-    const position = this.getPositionById(id)
-    if (position) {
-      const index = this.positions.findIndex(position.id)
+    const index = this.positions.findIndex((x) => x.id === id)
+
+    if (index >= 0) {
       this.positions.splice(index, 1)
     }
   }
 
   getPositionById(id) {
     return this.positions.find((x) => x.id == id)
+  }
+
+  registerGetPlayersEvent() {
+    this.socket.on('getPlayers', () => {
+      this.socket.emit('positions', this.positions)
+    })
+
+    return this
   }
 }
