@@ -1,11 +1,12 @@
 import React from 'react'
-import Canvas from './components/canvas/Canvas'
 import './App.css'
+
+import Home from './pages'
 
 function App() {
   return (
     <div className="App">
-      <Canvas />
+      <Home />
     </div>
   )
 }

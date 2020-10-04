@@ -28,6 +28,7 @@ export default class Canvas extends Component {
 
   draw = (p5) => {
     p5.clear()
+    p5.background(0)
     p5.fill(234, 31, 81)
     p5.noStroke()
     this.state.positions.forEach((position) => {
@@ -55,7 +56,7 @@ export default class Canvas extends Component {
   }
 
   windowResized = (p5) => {
-    p5.resizeCanvas(p5.windowWidth, p5.windowHeight)
+    p5.resizeCanvas(window.innerWidth, window.innerHeight)
   }
 
   render() {
