@@ -3,6 +3,9 @@ const http = require('http')
 const socketIo = require('socket.io')
 const routes = require('./routes/index')
 const GameBuilder = require('./game/GameBuilder')
+const initDb = require('./Data')
+
+initDb()
 
 const port = process.env.PORT || 4001
 
