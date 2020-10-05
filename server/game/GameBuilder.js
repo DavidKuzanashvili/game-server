@@ -28,6 +28,7 @@ module.exports = class GameBuilder {
           position.y += 5
           break
       }
+      console.log(this.positions)
       this.socket.emit('positions', this.positions)
     })
 
