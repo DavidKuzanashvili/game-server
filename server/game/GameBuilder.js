@@ -1,6 +1,7 @@
 module.exports = class GameBuilder {
-  constructor(positions, socket) {
+  constructor(positions, client, socket) {
     this.positions = positions || []
+    this.client = client
     this.socket = socket
   }
 
@@ -11,9 +12,9 @@ module.exports = class GameBuilder {
   }
 
   actOnEvent() {
-    const position = this.getPositionById(this.socket.id)
+    const position = this.getPositionById(this.client.id)
     if (!position) return
-    this.socket.on('move', (data) => {
+    this.client.on('move', (data) => {
       switch (data) {
         case 'left':
           position.x -= 5
@@ -28,7 +29,7 @@ module.exports = class GameBuilder {
           position.y += 5
           break
       }
-      console.log(this.positions)
+
       this.socket.emit('positions', this.positions)
     })
 
@@ -61,7 +62,7 @@ module.exports = class GameBuilder {
   }
 
   registerGetPlayersEvent() {
-    this.socket.on('getPlayers', () => {
+    this.client.on('getPlayers', () => {
       this.socket.emit('positions', this.positions)
     })
 

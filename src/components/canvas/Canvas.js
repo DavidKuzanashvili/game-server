@@ -19,9 +19,7 @@ export default function Canvas() {
       console.log(data)
       setPositions(data)
     })
-    socket.on('userConnected', (res) => {
-      console.log(res)
-    })
+
     setSocket(socket)
   }, [])
 
