@@ -20,7 +20,7 @@ const positions = []
 
 io.on('connection', (socket) => {
   console.log(`New client connected - id: ${socket.id}`)
-
+  socket.emit('userConnected', socket.id)
   const builder = new GameBuilder(positions, socket)
   builder
     .addPosition(socket.id)

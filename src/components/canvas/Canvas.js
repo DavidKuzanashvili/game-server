@@ -8,10 +8,19 @@ export default function Canvas() {
   const [socket, setSocket] = useState({})
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT)
+    const options = {
+      'force new connection': true,
+      reconnectionAttempts: 'infinity',
+      timeout: 10000,
+      transports: ['websocket'],
+    }
+    const socket = socketIOClient(ENDPOINT, options)
     socket.on('positions', (data) => {
       console.log(data)
       setPositions(data)
+    })
+    socket.on('userConnected', (res) => {
+      console.log(res)
     })
     setSocket(socket)
   }, [])
