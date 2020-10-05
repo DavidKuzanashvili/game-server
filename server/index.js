@@ -18,19 +18,14 @@ const io = socketIo(server)
 
 const positions = []
 
-io.on('connection', (socket) => {
-  console.log(`New client connected - id: ${socket.id}`)
-  socket.emit('userConnected', socket.id)
-  const builder = new GameBuilder(positions, socket)
-  builder
-    .addPosition(socket.id)
-    .emitPositions()
-    .actOnEvent()
-    .registerGetPlayersEvent()
+io.on('connection', (client) => {
+  console.log(`New client connected - id: ${client.id}`)
+  const builder = new GameBuilder(positions, client, io)
+  builder.addPosition(client.id).emitPositions().actOnEvent()
 
-  socket.on('disconnect', () => {
-    console.log(`Client disconnected - id: ${socket.id}`)
-    builder.removePosition(socket.id)
+  client.on('disconnect', () => {
+    console.log(`Client disconnected - id: ${client.id}`)
+    builder.removePosition(client.id)
   })
 })
 

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import socketIOClient from 'socket.io-client'
 import Sketch from 'react-p5'
-const ENDPOINT = 'http://127.0.0.1:4001'
+const ENDPOINT = 'http://localhost:4001'
 
 export default function Canvas() {
   const [positions, setPositions] = useState([])
   const [socket, setSocket] = useState({})
+  const [backgroundColor, setBackgroundColor] = useState({ r: 0, g: 0, b: 0 })
 
   useEffect(() => {
     const options = {
@@ -19,9 +20,11 @@ export default function Canvas() {
       console.log(data)
       setPositions(data)
     })
-    socket.on('userConnected', (res) => {
-      console.log(res)
+    socket.on('backgroundColor', (data) => {
+      console.log(data)
+      setBackgroundColor(data)
     })
+
     setSocket(socket)
   }, [])
 
@@ -36,10 +39,10 @@ export default function Canvas() {
 
   const draw = (p5) => {
     p5.clear()
-    p5.background(0)
-    p5.fill(234, 31, 81)
+    p5.background(backgroundColor.r, backgroundColor.g, backgroundColor.b)
     p5.noStroke()
     positions.forEach((position) => {
+      p5.fill(position.color.r, position.color.g, position.color.b)
       p5.rect(position.x, position.y, 50, 50)
     })
     update(p5)

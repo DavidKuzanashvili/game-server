@@ -1,7 +1,9 @@
 module.exports = class GameBuilder {
-  constructor(positions, socket) {
+  constructor(positions, client, socket) {
     this.positions = positions || []
+    this.client = client
     this.socket = socket
+    this.colors = []
   }
 
   emitPositions() {
@@ -11,9 +13,9 @@ module.exports = class GameBuilder {
   }
 
   actOnEvent() {
-    const position = this.getPositionById(this.socket.id)
+    const position = this.getPositionById(this.client.id)
     if (!position) return
-    this.socket.on('move', (data) => {
+    this.client.on('move', (data) => {
       switch (data) {
         case 'left':
           position.x -= 5
@@ -28,7 +30,7 @@ module.exports = class GameBuilder {
           position.y += 5
           break
       }
-      console.log(this.positions)
+
       this.socket.emit('positions', this.positions)
     })
 
@@ -36,13 +38,30 @@ module.exports = class GameBuilder {
   }
 
   addPosition(id) {
-    const position = this.getPositionById(id)
+    let position = this.getPositionById(id)
     if (!position) {
-      this.positions.push({
+      const color = {
+        positionId: id,
+        r: Math.floor(Math.random() * 255),
+        g: Math.floor(Math.random() * 255),
+        b: Math.floor(Math.random() * 255),
+      }
+      position = {
         id: id,
         x: 0,
         y: 0,
-      })
+        color,
+      }
+
+      for (let i = 0; this.colors.length; ++i) {
+        const index = (i + 1) % this.colors.length
+        this.colors[index].positionId = this.positions[i].id
+        this.positions[i].color = this.colors[index]
+        console.log(this.positions[i], this.colors[index])
+      }
+      this.colors.push(color)
+      this.positions.push(position)
+      this.socket.emit('backgroundColor', position.color)
     }
 
     return this
@@ -61,7 +80,7 @@ module.exports = class GameBuilder {
   }
 
   registerGetPlayersEvent() {
-    this.socket.on('getPlayers', () => {
+    this.client.on('getPlayers', () => {
       this.socket.emit('positions', this.positions)
     })
 
