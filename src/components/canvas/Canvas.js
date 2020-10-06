@@ -6,7 +6,7 @@ const ENDPOINT = 'http://localhost:4001'
 export default function Canvas() {
   const [positions, setPositions] = useState([])
   const [socket, setSocket] = useState({})
-  const [backgroundColor, setBackgroundColor] = useState({ r: 0, g: 0, b: 0 })
+  const [backgroundColor] = useState({ r: 28, g: 100, b: 100 })
 
   useEffect(() => {
     const options = {
@@ -20,11 +20,6 @@ export default function Canvas() {
       console.log(data)
       setPositions(data)
     })
-    socket.on('backgroundColor', (data) => {
-      console.log(data)
-      setBackgroundColor(data)
-    })
-
     setSocket(socket)
   }, [])
 

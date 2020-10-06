@@ -1,9 +1,15 @@
 module.exports = class GameBuilder {
-  constructor(positions, client, socket) {
+  constructor(positions, socket) {
     this.positions = positions || []
-    this.client = client
+    this.clients = []
     this.socket = socket
     this.colors = []
+  }
+
+  setClient(client) {
+    this.clients.push(client)
+
+    return this
   }
 
   emitPositions() {
@@ -12,10 +18,11 @@ module.exports = class GameBuilder {
     return this
   }
 
-  actOnEvent() {
-    const position = this.getPositionById(this.client.id)
+  actOnEvent(id) {
+    const position = this.getPositionById(id)
+    const client = this.clients.find((x) => x.id === id)
     if (!position) return
-    this.client.on('move', (data) => {
+    client.on('move', (data) => {
       switch (data) {
         case 'left':
           position.x -= 5
@@ -53,15 +60,14 @@ module.exports = class GameBuilder {
         color,
       }
 
-      for (let i = 0; this.colors.length; ++i) {
+      for (let i = 0; i < this.colors.length; ++i) {
         const index = (i + 1) % this.colors.length
         this.colors[index].positionId = this.positions[i].id
         this.positions[i].color = this.colors[index]
-        console.log(this.positions[i], this.colors[index])
       }
+
       this.colors.push(color)
       this.positions.push(position)
-      this.socket.emit('backgroundColor', position.color)
     }
 
     return this
@@ -77,13 +83,5 @@ module.exports = class GameBuilder {
 
   getPositionById(id) {
     return this.positions.find((x) => x.id == id)
-  }
-
-  registerGetPlayersEvent() {
-    this.client.on('getPlayers', () => {
-      this.socket.emit('positions', this.positions)
-    })
-
-    return this
   }
 }

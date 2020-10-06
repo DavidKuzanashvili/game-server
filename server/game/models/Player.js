@@ -20,4 +20,12 @@ module.exports = class Palyer {
         break
     }
   }
+
+  update(players) {
+    players.array.forEach((element) => {
+      if (element.x + 50 >= this.x && element.y + 50 >= this.y) {
+        return
+      }
+    })
+  }
 }
