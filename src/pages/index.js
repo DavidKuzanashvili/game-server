@@ -1,8 +1,17 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import About from './about'
 import Games from './games'
+
+import { ReactComponent as BellIcon } from '../icons/bell.svg'
+import { ReactComponent as MessengerIcon } from '../icons/messenger.svg'
+import { ReactComponent as CaretIcon } from '../icons/caret.svg'
+import { ReactComponent as PlusIcon } from '../icons/plus.svg'
+
+import Navbar from '../components/Navigations/Navbar'
+import NavItem from '../components/Navigations/NavItem'
+import DropdownMenu from '../components/Dropdowns/DropdownMenu'
 
 class Home extends Component {
   constructor(props) {
@@ -12,32 +21,27 @@ class Home extends Component {
   render() {
     return (
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/games">Games</Link>
-              </li>
-            </ul>
-          </nav>
+        <Navbar>
+          <NavItem icon={<PlusIcon />} />
+          <NavItem icon={<BellIcon />} />
+          <NavItem icon={<MessengerIcon />} />
 
-          {/* A <Switch> looks through its children <Route>s and
-                    renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/games">
-              <Games />
-            </Route>
-          </Switch>
-        </div>
+          <NavItem icon={<CaretIcon />}>
+            <DropdownMenu />
+          </NavItem>
+        </Navbar>
+
+        {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. 
+          */}
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/games">
+            <Games />
+          </Route>
+        </Switch>
       </Router>
     )
   }
