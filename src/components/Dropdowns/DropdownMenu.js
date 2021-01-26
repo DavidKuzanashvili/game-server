@@ -6,13 +6,16 @@ import { ReactComponent as BoltIcon } from '@/icons/bolt.svg'
 import React, { useState, useEffect, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+
+import './dropdown.css'
 
 function DropdownMenu() {
   DropdownItem.propTypes = {
     goToMenu: PropTypes.string,
-    leftIcon: PropTypes.object,
-    children: PropTypes.array,
-    rightIcon: PropTypes.object,
+    leftIcon: PropTypes.any,
+    children: PropTypes.any,
+    rightIcon: PropTypes.any,
   }
 
   const [activeMenu, setActiveMenu] = useState('main')
@@ -52,6 +55,9 @@ function DropdownMenu() {
       >
         <div className="menu">
           <DropdownItem>My Profile</DropdownItem>
+          <DropdownItem leftIcon="🎮" rightIcon={<ChevronIcon />} goToMenu="games">
+            Games
+          </DropdownItem>
           <DropdownItem
             leftIcon={<CogIcon />}
             rightIcon={<ChevronIcon />}
@@ -98,6 +104,26 @@ function DropdownMenu() {
           <DropdownItem leftIcon="🐸">Frog</DropdownItem>
           <DropdownItem leftIcon="🦋">Horse?</DropdownItem>
           <DropdownItem leftIcon="🦔">Hedgehog</DropdownItem>
+        </div>
+      </CSSTransition>
+
+      <CSSTransition
+        in={activeMenu === 'games'}
+        timeout={500}
+        classNames="menu-secondary"
+        unmountOnExit
+        onEnter={calcHeight}
+      >
+        <div className="menu">
+          <DropdownItem goToMenu="main" leftIcon={<ArrowIcon />}>
+            <h2>Games</h2>
+          </DropdownItem>
+          <Link to="/games">
+            <DropdownItem leftIcon="🎮">Cubes</DropdownItem>
+          </Link>
+          <Link to="/firstperson">
+            <DropdownItem leftIcon="🎮">First Person</DropdownItem>
+          </Link>
         </div>
       </CSSTransition>
     </div>

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import About from './about'
 import Games from './games'
+import FirstPerson from './games/FirstPerson'
 
 import { ReactComponent as BellIcon } from '../icons/bell.svg'
 import { ReactComponent as MessengerIcon } from '../icons/messenger.svg'
@@ -40,6 +41,9 @@ class Home extends Component {
           </Route>
           <Route path="/games">
             <Games />
+          </Route>
+          <Route path="/firstperson">
+            <FirstPerson />
           </Route>
         </Switch>
       </Router>
